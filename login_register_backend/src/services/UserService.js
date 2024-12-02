@@ -17,7 +17,7 @@ const createUser = (newUser) => {
 
             // mã hóa password
             let hash = bcrypt.hashSync(password, 10);
-            console.log('hash: ',hash); 
+            // console.log('hash: ',hash); 
 
             // tạo user mới với password đc mh
             const createdUser = await User.create({
@@ -68,13 +68,13 @@ const loginUser = (userLogin) => {
             const access_token = await generalAccessToken({
                 id: checkUsername.id
             });
-            console.log('Access token: ', access_token);
+            // console.log('Access token: ', access_token);
 
             //
             const refresh_token = await generalRefreshToken({
                 id: checkUsername.id
             });
-            console.log("Refresh token: ",refresh_token);
+            // console.log("Refresh token: ",refresh_token);
 
             resolve({
                 message: 'Đăng nhập thành công',
@@ -100,7 +100,7 @@ const updateUser = (id,data) => {
             const checkUsername = await User.findOne({
                 _id: id
             });
-            console.log('Check user: ', checkUsername);
+            // console.log('Check user: ', checkUsername);
             if (checkUsername === null) {
                 resolve({
                     message: 'Không tồn tại user này',
@@ -108,7 +108,7 @@ const updateUser = (id,data) => {
             }
 
             const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
-            console.log("update user", updatedUser);
+            // console.log("update user", updatedUser);
 
             resolve({
                 message: 'Tìm thấy User ID và Update User THÀNH CÔNG',
@@ -130,10 +130,10 @@ const getUser = (id,data) => {
             const checkUsername = await User.findOne({
                 id: id
             });
-            console.log('Check user: ', checkUsername);
+            // console.log('Check user: ', checkUsername);
 
             const userDetail = await User.findById(id, data);
-            console.log("update user", userDetail);
+            // console.log("update user", userDetail);
 
             resolve({
                 message: 'Tìm thấy User',
