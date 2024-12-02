@@ -11,6 +11,7 @@ const createUser = async (req, res) => {
         if (!username || !password) {
             return res.status(400).json(
                 {
+                    status: "ERR",
                     code: 400,
                     message: 'Không được để trống'
                 }
@@ -23,6 +24,7 @@ const createUser = async (req, res) => {
     }
     catch (err) {
         return res.status(400).json({
+            status: "ERR",
             code: 400,
             message: err,
         })
@@ -32,7 +34,6 @@ const createUser = async (req, res) => {
 //Log in user
 const loginUser = async (req, res) => {
     try {
-        // console.log(req.body);
         const { username, password } = req.body;
         const reg = /[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/`~]/;
         const isCheckUsername = reg.test(username); // Kí tự đặc biệt
@@ -45,13 +46,20 @@ const loginUser = async (req, res) => {
                 }
             );
         }
-        // console.log('isCheckUsername: ',isCheckUsername);
 
         const response = await UserService.loginUser(req.body);
-        return res.status(200).json(response);
+        const { refresh_token, ...newResponse } = response;
+        // console.log('response: ', response);
+        res.cookie('refresh_token', refresh_token, {
+            HttpOnly: true,
+            Secure: true
+        })
+
+        return res.status(200).json(newResponse);
     }
     catch (err) {
         return res.status(400).json({
+            status: "ERR",
             code: 400,
             message: err,
         })

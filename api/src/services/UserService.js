@@ -50,6 +50,7 @@ const loginUser = (userLogin) => {
             });
             if (checkUsername === null) {
                 resolve({
+                    status: 'ERR',
                     message: 'Sai mật khẩu hoặc tài khoản không tồn tại',
                 })
             }
@@ -60,6 +61,7 @@ const loginUser = (userLogin) => {
             // mk sai
             if (!comparePassword) {
                 resolve({
+                    status: 'ERR',
                     message: 'Sai mật khẩu',
                 })
             }
